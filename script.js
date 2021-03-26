@@ -17,7 +17,10 @@ let randomPlanet = Math.floor(Math.random() * Math.floor(6));
       });
    });
    let form = document.querySelector("form");
+   
    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
       let pilot = document.getElementById('pilotName');
       let copilot = document.getElementById('copilotName');
       let fuel = document.getElementById('fuelLevel');
@@ -35,47 +38,37 @@ let randomPlanet = Math.floor(Math.random() * Math.floor(6));
       if ( !pilot.value.match(regex) || !copilot.value.match(regex) || !fuel.value.match(regex2) || !cargo.value.match(regex2)) {
          if ( !pilot.value.match(regex) || !copilot.value.match(regex)) {
             alert("Please enter valid name for pilot and copilot!");
-            //stop the form submission
-            event.preventDefault();
          }
          if ( !fuel.value.match(regex2) || !cargo.value.match(regex2)) {
             alert("Please enter a numerical value for fuel and cargo!");
-            //stop the form submission
-            event.preventDefault();
          }
       }
       else if (fuel.value < 10000 || cargo.value > 10000){
-         pstatus.innerHTML = `${pilot.value}`;
-         cpstatus.innerHTML = `${copilot.value}`;
+         pstatus.innerHTML = `${pilot.value} is ready for launch.`;
+         cpstatus.innerHTML = `${copilot.value} is ready for launch`;
          stat.innerHTML = "Shuttle not ready for launch";
          stat.style.color="red";
          faulty.style.visibility="visible";
          if (fuel.value < 10000){
             fstat.innerHTML   =  "Fuel level low. There is not enough fuel for the journey!";
          }
+         else {
+            fstat.innerHTML   =  "Fuel level high enough for launch";
+         }
          if (cargo.value > 10000){
             cstat.innerHTML   =  "There is too much mass for the shuttle to take off!";
          }
-         //stop the form submission
-         event.preventDefault();
+         else {
+            cstat.innerHTML   =  "Mass level low enough for launch!";
+         }
       }
       else {
-         stat.style.color="green";
+         stat.style.color = "green";
          stat.innerHTML = "Shuttle is ready for launch";
-         faulty.style.visibility="hidden";
-         //stop the form submission
-         event.preventDefault();
+         cstat.innerHTML   =  "Mass level low enough for launch!";
+         fstat.innerHTML   =  "Fuel level high enough for launch";
+         faulty.style.visibility="visible";
       }
    });
 });
-/* This block of code shows how to format the HTML once you fetch some planetary JSON!
-<h2>Mission Destination</h2>
-<ol>
-   <li>Name: ${}</li>
-   <li>Diameter: ${}</li>
-   <li>Star: ${}</li>
-   <li>Distance from Earth: ${}</li>
-   <li>Number of Moons: ${}</li>
-</ol>
-<img src="${}">
-*/
+
